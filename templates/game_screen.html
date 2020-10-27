@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="">
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+{% extends "base.html" %}
+{% block content %}
+<h3>User {{ user.username }}</h3>
+<h1>Your hand <div id= "user_hand">{{ hand }}</div></h1>
+<h3>Scores</h3>
+<table class="center">
+    <tr>
+        <th>User</th>
+        <th>Score</th>
+    </tr>
+    <tr>
+        <td ALIGN="center">{{ game.player1_name }}</td>
+        <td ALIGN="center" id="p1_score"></td>
+    </tr>
+    <tr>
+        <td ALIGN="center">{{ game.player2_name }}</td>
+        <td ALIGN="center" id="p2_score"></td>
+    </tr>
+</table>
+<head>
+    <meta charset="UTF-8">
+    <title>Game</title>
+</head>
+<body>
+<form action={{ url_for("join_game", gameName = gamename ) }} method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    <div>
+            Prev Move: <div id="prev_move"> <script>
+if(typeof(EventSource) !== "undefined") {
+ var prev_move = document.getElementById("prev_move");
+  var p1_score = document.getElementById("p1_score");
+  var p2_score = document.getElementById("p2_score");
+  var  user_hand = document.getElementById("user_hand");
+  var eventSource = new EventSource("/stream/"+{{ gamename |tojson}} + "&" + {{user.username | tojson}});
+  eventSource.onmessage = function(e) {
+  var splitted_data = e.data.split(";");
+  prev_move.innerHTML = splitted_data[0];
+  p1_score.innerHTML = splitted_data[1];
+  p2_score.innerHTML = splitted_data[2];
+  user_hand.innerHTML = splitted_data[4];
+  if(splitted_data[5] == "True")
+  {
+      turn.innerHTML = "Your turn";
+  }
+  else{
+      turn.innerHTML = "Waiting for other player's Move";
+  }
+
+  if(splitted_data[3].length > 0)
+  {
+      document.getElementById("make_move").disabled = true;
+      alert(splitted_data[3] +" has won the game!");
+  }
+  
+};
+}
+</script>
+             </div>
+        <label id = "turn"></label><br>
+        <label>Bluff Query</label>
+        <input type="text" id="bluffquery" name="bluffquery" placeholder="Enter the name">
+    </div>
+    <br>
+
+    <div>
+        <label>Actual Query</label>
+        <input type="text" id="actualquery" name="actualquery" placeholder="Enter the name">
+    </div>
+    <br>
+    <div>
+            <button class="button" id="make_move" type="submit" style="width: 8%; cursor:pointer">Make Move</button>
+        <br>
+    </div>
+</form>
+{% if game.completed == 1 %}
+    <a href="{{ url_for("call_bluff", gameName=gamename) }}">
+        <button class="button" style="cursor:pointer" disabled>Call bluff</button>
+    </a>
+{% else %}
+    <a href="{{ url_for("call_bluff", gameName=gamename) }}">
+        <button class="button" style="cursor:pointer">Call bluff</button>
+    </a>
+{% endif %}
+
+{% if game.completed == 1 %}
+    <a href="{{ url_for("pass_move", gamename=gamename) }}">
+        <button class="button" style="cursor:pointer" disabled>Pass</button>
+    </a>
+{% else %}
+    <a href="{{ url_for("pass_move", gamename=gamename) }}">
+        <button class="button" style="cursor:pointer">Pass</button>
+    </a>
+{% endif %}
+</body>
+{% endblock %}
+</html>

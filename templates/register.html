@@ -1,0 +1,54 @@
+<style>
+    .p {
+        color: red;
+    }
+</style>
+{% extends "base.html" %}
+
+{% block content %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+    <h1>Register</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.email.label }}<br>
+            {{ form.email(size=64) }}<br>
+            {% for error in form.email.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password2.label }}<br>
+            {{ form.password2(size=32) }}<br>
+            {% for error in form.password2.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    <p class="p">
+    <b>Username Requirements:</b><br>
+    - Username must contain between 6-8 characters.<br>
+    - Must not start and end with any special character.<br>
+    - Must not contain special character other than - or _ in between.<br><br>
+    <b>Password Requirements:</b><br>
+    - Password must contain between 8-15 characters.<br>
+    - Must contain at least one number and special character.<br>
+    - Must contain both lower and upper case characters.
+    </p>
+{% endblock %}

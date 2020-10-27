@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+    <html lang="en">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+    <head>
+        <meta charset="UTF-8">
+        <title>Instructions</title>
+    </head>
+    <body>
+   
+    <p> A player randomly starts. At the start, you wait for two players to enter the room including you. Once the players have entered the room, the game starts! Now, enter a bluff query of the form "{Number of cards} {Denomination/ Card Face Value}". Eg: 4 Q</p>
+    <p> Now, you enter the actual cards you want to play, which are on display in your hand and you can play multiple cards space separated. In the above, we might play "QC QD QS QH" where C is clubs, D is dice, S is spade, H is hearts. Note that we can bluff, play a card which we claim to be another one and replace one or all of the queens.
+
+    </body>
+{% endblock %}
+</html>
+

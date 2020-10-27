@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<style>
+    table, th, td {
+        border: 1px solid black;
+        background-color: #f1f1c1;
+    }
+
+</style>
+{% extends "base.html" %}
+{% block content %}
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Moves</title>
+    </head>
+    <body>
+    <h3>Moves for {{ game.gamename }}</h3>
+    <table style="width:80%">
+        <tr>
+            <th>Player 1 hand</th>
+            <th>Player 2 Hand</th>
+            <th>Turn</th>
+            <th>Action</th>
+            <th>Cards Played</th>
+            <th>Cards Bluffed</th>
+        </tr>
+        {% for moves in gameMoves %}
+            {% if moves.game_id == game.id %}
+                <tr>
+                    <td ALIGN="center">{{ moves.player1_hand }}</td>
+                    <td ALIGN="center">{{ moves.player2_hand }}</td>
+                    <td ALIGN="center">{{ moves.turn_player_name }}</td>
+                    <td ALIGN="center">{{ moves.player_action }}</td>
+                    <td ALIGN="center">{{ moves.cards_played }}</td>
+                    <td ALIGN="center">{{ moves.cards_bluffed }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+    <h2>Winner : {{ game.winner }}</h2>
+    <h2>Final Score</h2>
+    <h3>{{ game.player1_name }} : {{ game.player1_score }}</h3>
+    <h3>{{ game.player2_name }} : {{ game.player2_score }}</h3>
+    </body>
+{% endblock %}
+</html>

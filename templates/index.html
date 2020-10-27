@@ -1,0 +1,96 @@
+<html lang="">
+
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}"> 
+{% extends "base.html" %}
+{% block content %}
+    <body>
+    <h1>Hello, Welcome to The Bluff Game!</h1>
+    <h3>Greetings {{ user.username }}</h3>
+    <a href = "how_to_play">Instructions on playing</a>
+    <h3>Your Stats:</h3>
+    <table class="center">
+        <tr>
+            <th>Wins</th>
+            <th>Losses</th>
+            <th>Draws</th>
+        </tr>
+        <tr>
+            <td ALIGN="center">{{ user.win }}</td>
+            <td ALIGN="center">{{ user.loss }}</td>
+            <td ALIGN="center">{{ user.draw }}</td>
+        </tr>
+    </table>
+    <br>
+    <h3>Global Stats:</h3>
+    <table class="center">
+        <tr>
+            <th>User</th>
+            <th>Wins</th>
+            <th>Losses</th>
+            <th>Draws</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td ALIGN="center">{{ user.username }}</td>
+                <td ALIGN="center">{{ user.win }}</td>
+                <td ALIGN="center">{{ user.loss }}</td>
+                <td ALIGN="center">{{ user.draw }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <hr>
+    <h3>Join a pre-existing Game:</h3>
+    <header>
+        <a href="{{ url_for("show_games") }}">
+            <button class="button" style="cursor:pointer">Join a game</button>
+        </a>
+    </header>
+    <hr>
+    <form>
+        <div>
+            <h3>Start a Game:</h3>
+            <label>Name</label>
+            <input type="text" id="gamename" name="gamename" placeholder="Enter the name" required>
+        </div>
+        <br>
+        <div>
+            <button class="button" type="submit" style="width: 8%; cursor:pointer">Create</button>
+        </div>
+    </form>
+    <hr>
+    <h3>Completed Games</h3>
+    <header>
+        <a href="{{ url_for('completed_games') }}">
+            <button class="button" style="cursor:pointer">Completed Games</button>
+        </a>
+    </header>
+    <i id="msg"></i>
+    <script>
+        var csrftoken = "{{ csrf_token() }}";
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('form').onsubmit = () => {
+                const request = new XMLHttpRequest();
+                const gamename = document.querySelector('#gamename').value;
+                request.open('POST', "/create_game");
+                request.onload = () => {
+                    const data = JSON.parse(request.responseText);
+                    if (data.success) {
+                        document.querySelector('#msg').innerHTML = 'Game is created successfuly';
+                        document.querySelector('#msg').style.color = 'green'
+                    } else {
+                        document.querySelector('#msg').innerHTML = 'Sorry, this game already exists. please try another name';
+                        document.querySelector('#msg').style.color = 'red'
+                    }
+                };
+                const inputs = new FormData();
+                inputs.append('gamename', gamename);
+                request.setRequestHeader("X-CSRFToken", csrftoken);
+                request.send(inputs);
+                return false;
+            }
+        });
+    </script>
+    </body>
+{% endblock %}
+</html>

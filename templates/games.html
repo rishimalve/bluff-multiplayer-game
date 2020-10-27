@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+    <html lang="en">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+    <head>
+        <meta charset="UTF-8">
+        <title>Games</title>
+    </head>
+    <body>
+    <h3>Join a game</h3>
+
+    <ul>
+        {% for game in games %}
+            {% if game.completed == 0 %}
+                <a href="{{ url_for('join_game', gameName = game.gamename) }}">
+                    <li>{{ game.gamename }}</li>
+                </a>
+            {% endif %}
+        {% endfor %}
+
+    </ul>
+
+    </body>
+{% endblock %}
+</html>

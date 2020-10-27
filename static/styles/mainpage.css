@@ -1,0 +1,40 @@
+body{
+     background-image: url("https://www.jakpost.travel/wimages/large/14-146410_sky-wallpaper-light-blue-sky-background.jpg");
+     height: 100%;
+     background-size: cover;
+     text-align: center;
+     }
+    button {
+        border: 1px solid #0066cc;
+        background-color: #0099cc;
+        color: #ffffff;
+        padding: 5px 10px;
+    }
+
+    button:hover {
+        border: 1px solid #0099cc;
+        background-color: #00aacc;
+        color: #ffffff;
+        padding: 5px 10px;
+    }
+
+    button:disabled,
+    button[disabled] {
+        border: 1px solid #999999;
+        background-color: #cccccc;
+        color: #666666;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        background-color: #f1f1c1;
+    }
+   
+}
+form {
+    display: inline-block;
+}
+table.center {
+    margin-left:auto; 
+    margin-right:auto;
+  }
